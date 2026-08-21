@@ -14,8 +14,14 @@
   内容一经封存即不可变动（动了哈希必红，`scripts/validate_entries.py` 强制）。
 - **spec/卡/PR 只能引用 `id` + `sealed_sha256` 前 8 位**（如 `HO-0001@a1b2c3d4`），
   **禁止引用 payload 内容**——引用内容 = 提前泄题 + 破坏封存的可验证性。
-- 揭封（unseal）gate 属 W4-C3（宪法 §4E 系统级"holdout 揭封"），本仓只立约定，
-  不建揭封流程。揭封时先验 `sealed_sha256` 再执行，详情写 holdout issue。
+- 揭封（unseal）gate 属 W4-C3（.github#222 / ADR-0068）：揭封侧（CI-Workflows
+  `pipeline/holdout-unseal/`）先验 `sealed_sha256` 再解封执行（不匹配=fail-closed
+  拒揭），PR check 只显示计数；逐条明细写回本仓 issue。本仓配套两件：
+  `scripts/seal.py`——测试文件封存为 `payload.kind=sealed-test-set` 条目
+  （文件名+sha256+base64；仍经 `new_entry.py` 落盘）；`scripts/unseal-log.py`
+  ——揭封台账 `ledger/unseal.jsonl`（append-only JSONL + hash 链，公式同
+  CI-Workflows pipeline/metering）：每次揭封追加一行（PR 号、sealed_sha256 校验
+  结果、通过计数、时戳、run_id），改历史必断链，`verify` 随时巡检（决策 4）。
 - 新增/补给条目必须经 `scripts/new_entry.py` 生成（自动算哈希、防 id 冲突），
   禁止手写条目文件。
 
@@ -64,7 +70,9 @@ entries/index.yaml           # 索引：{version, entries: [{id, file, sha256}]}
 canary/registry.yaml         # {version, markers: [{id, marker, drill}]}
 scripts/validate_entries.py  # 校验：schema/哈希/id 唯一递增/index/canary 双向一致
 scripts/new_entry.py         # 参数化生成新条目（算哈希、防冲突、更新 index/registry）
-.github/workflows/validate.yml  # PR+push+weekly cron 跑校验
+scripts/seal.py / unseal-log.py  # 封存测试文件 / append-only 揭封台账（W4-C3，ADR-0068）
+scripts/tests/ + ledger/unseal.jsonl  # 脚本自测 / 台账落账（verdict 揭封时追加+回传）
+.github/workflows/validate.yml  # PR+push+weekly cron 跑校验与脚本自测
 ```
 
 ## 验证

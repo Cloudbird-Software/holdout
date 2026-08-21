@@ -33,3 +33,19 @@ jobs:
       - run: pip install jsonschema pyyaml
       - name: 条目封存完整性校验
         run: python3 scripts/validate_entries.py
+
+  # W4-C3（.github#222 / ADR-0068）：seal/unseal-log 自测——封存哈希公式红/绿、append-only
+  # 台账（两行且首行不变）、改历史断链红；fixture 临时目录，不触真实试卷。系统 python+pyyaml。
+  selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: 封存/台账脚本自测（W4-C3）
+        run: |
+          pip install pyyaml
+          python3 -m unittest discover -s scripts/tests -v
