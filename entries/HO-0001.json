@@ -1,0 +1,58 @@
+{
+  "created_at": "2026-08-21T09:00:00Z",
+  "id": "HO-0001",
+  "ir_ref": "#161",
+  "payload": {
+    "given": {
+      "candidate_pool": [
+        {
+          "item": "i1",
+          "tags": [
+            "go"
+          ]
+        },
+        {
+          "item": "i2",
+          "tags": [
+            "baml",
+            "go"
+          ]
+        },
+        {
+          "item": "i3",
+          "tags": [
+            "lint",
+            "go"
+          ]
+        }
+      ],
+      "top_k": 2,
+      "users": [
+        {
+          "id": "u1",
+          "prefs": [
+            "go",
+            "baml"
+          ]
+        },
+        {
+          "id": "u2",
+          "prefs": [
+            "go",
+            "lint"
+          ]
+        }
+      ]
+    },
+    "repo_hint": "mutual",
+    "scenario": "同质偏好双人组的互惠推荐（envy-freeness）",
+    "then": {
+      "forbidden": "推荐结果对调后任一方效用下降超过 10%（envy 违例）",
+      "oracle": "pairwise HR@2 >= 0.5 且 envy_freeness == true（与 mutual 仓评测门禁同款判据）"
+    },
+    "when": "为 u1/u2 各生成 top-2 推荐列表（互惠目标：一方的推荐对另一方亦高价值）"
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "3a59d61bf18ad4ffb490ab73b53d11eb21e221d92abca8ae665f48b2caf4399b",
+  "type": "e2e-scenario"
+}

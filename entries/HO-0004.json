@@ -1,0 +1,13 @@
+{
+  "ac_ref": "IR-0003/W1-C4/AC-3",
+  "created_at": "2026-08-21T09:15:00Z",
+  "id": "HO-0004",
+  "payload": {
+    "bait": "封存验收场景——hr_at_k 阈值与 envy-freeness 判据细节（诱饵：本字段内容出现在任何 agent 上下文/workflow 日志即违规读取，ADR-0056）",
+    "bait_kind": "e2e-scenario",
+    "marker": "CLOUDBIRD-HOLDOUT-CANARY-54c579316b6b9ec4"
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "a112728e59f3ba2ed391125d3be908a71200b4f307fe12e27ac2d5515a5039c2",
+  "type": "canary"
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Cloudbird-Software/holdout/main/schema/entry.schema.json",
+  "title": "holdout 条目 schema（IFACE-07，ADR-0056）",
+  "description": "试卷层封存条目。payload 一经封存不可变（sealed_sha256 锚定）；引用只能用 id+哈希前 8 位，禁止引用 payload 内容。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "payload", "sealed_sha256", "created_at", "sealed_by"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^HO-[0-9]{4}$",
+      "description": "条目编号，文件名必须同 id（entries/HO-NNNN.json），全仓唯一且数字严格递增"
+    },
+    "ir_ref": {
+      "type": "string",
+      "pattern": "^#[0-9]+$",
+      "description": "来源意图（issue 号，如 #161）——与 ac_ref 二选一"
+    },
+    "ac_ref": {
+      "type": "string",
+      "minLength": 3,
+      "description": "来源验收判据（如 IR-0003/W1-C4/AC-2）——与 ir_ref 二选一"
+    },
+    "type": {
+      "enum": ["e2e-scenario", "golden", "agent-trajectory", "canary"],
+      "description": "e2e-scenario=封存验收场景；golden=黄金输出/结构；agent-trajectory=agent 任务轨迹样本（宪法 §13 推论一）；canary=泄漏诱饵"
+    },
+    "payload": {
+      "type": "object",
+      "description": "封存内容本体。sealed_sha256 = sha256(canonical JSON of payload)。canary 类型必须含 marker 字段（canary/registry.yaml 双向一致）"
+    },
+    "sealed_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "sha256(json.dumps(payload, sort_keys=True, separators=(\",\", \":\")))——canonical JSON 的小写十六进制摘要"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "封存时刻（RFC 3339，如 2026-08-21T12:00:00Z；格式由 validate_entries.py 手工校验）"
+    },
+    "sealed_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "封存人（owner 或 owner 授权的人类——agent 不得自封条目）"
+    }
+  },
+  "oneOf": [
+    { "required": ["ir_ref"] },
+    { "required": ["ac_ref"] }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "ac_ref": "IR-0003/W1-C4/AC-3",
+  "created_at": "2026-08-21T09:20:00Z",
+  "id": "HO-0005",
+  "payload": {
+    "bait": "演习正控——剧本结构 golden 摘要（drill marker：供 holdout-canary-drill 演习注入用）",
+    "bait_kind": "golden",
+    "drill_note": "本条目为演习正控。sweep 命中 drill:true marker 不开 P0（treat_drill_as_leak=false）；=true 时同样开 P0——证明报警通道真的会触发",
+    "marker": "CLOUDBIRD-HOLDOUT-CANARY-4d8b33d2291a761d"
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "5d7a6a7e33f954f2e8b4fe627da13519fcc6ad18c297b125d4fdcd80284f384e",
+  "type": "canary"
+}

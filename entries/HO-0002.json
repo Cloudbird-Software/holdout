@@ -1,0 +1,42 @@
+{
+  "created_at": "2026-08-21T09:05:00Z",
+  "id": "HO-0002",
+  "ir_ref": "#161",
+  "payload": {
+    "golden": {
+      "scenes": [
+        {
+          "beat": "hook",
+          "max_chars_per_line": 20,
+          "max_lines": 2
+        },
+        {
+          "beat": "setup",
+          "max_lines": 3
+        },
+        {
+          "beat": "turn",
+          "max_lines": 2
+        },
+        {
+          "beat": "payoff",
+          "max_lines": 2,
+          "must_reference": [
+            "外卖备注"
+          ]
+        }
+      ],
+      "tolerance_sec": 2,
+      "total_duration_sec": 30
+    },
+    "input": {
+      "format": "short-video-script",
+      "pitch": "30 秒竖屏短剧：加班到深夜的程序员收到外卖备注'记得吃饭'"
+    },
+    "kind": "script-structure-golden",
+    "repo_hint": "Script_Writer"
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "aae03966c4e3b2301484b38c1081e20e7654c20e2f9c09bffde0d10368ebca2a",
+  "type": "golden"
+}
