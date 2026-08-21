@@ -1,0 +1,50 @@
+{
+  "ac_ref": "IR-0003/W1-C4/AC-2",
+  "created_at": "2026-08-21T09:10:00Z",
+  "id": "HO-0003",
+  "payload": {
+    "golden_output": {
+      "assignment": {
+        "a1": "s1",
+        "a2": "s3",
+        "a3": "s2"
+      },
+      "note": "人人拿到首选（matrix 值 2）——稳定且无 envy 的平凡正确解，用作 NSW 匹配器的封存 oracle",
+      "stable": true
+    },
+    "input": {
+      "agents": [
+        "a1",
+        "a2",
+        "a3"
+      ],
+      "preference_matrix_rows_agents_cols_slots": [
+        [
+          2,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          0,
+          2,
+          1
+        ]
+      ],
+      "slots": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    },
+    "kind": "matching-golden",
+    "repo_hint": "mutual"
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "a8179fd2e3fb4b47576891499adc8291fad09a671cc769dbf822ede31dc12069",
+  "type": "golden"
+}

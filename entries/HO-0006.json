@@ -1,0 +1,22 @@
+{
+  "created_at": "2026-08-21T09:25:00Z",
+  "id": "HO-0006",
+  "ir_ref": "#161",
+  "payload": {
+    "repo_hint": "Cloudbird-Software（组织级）",
+    "task": "陌生 agent 仅读 AGENTS.md 找到并认领一张 state:ready 卡（宪法 §11 统一入口验收判据的复测场景）",
+    "trajectory_expectation": {
+      "observability": "agent 任务轨迹——宪法 §13 推论一第四观测类（与 e2e/api/unit 并列）",
+      "steps": [
+        "读仓根 AGENTS.md 协议块（≤30 行，无外部文档依赖）",
+        "ghcb next（列出 state:ready 卡）",
+        "ghcb claim <n>（经 arbiter 原子 CAS，先到先得）",
+        "开合规 PR（body 带卡元数据，缺失 exit 3）"
+      ],
+      "success": "全程无人类补任何提示词；PR 通过 gate+org-gate"
+    }
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "2ba5ad9270cc6a4e10b0220d98b665b602f67b7cf293c1166cf744a3128c6764",
+  "type": "agent-trajectory"
+}

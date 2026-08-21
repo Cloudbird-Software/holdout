@@ -1,0 +1,20 @@
+version: 1
+entries:
+- id: HO-0001
+  file: HO-0001.json
+  sha256: 0a0290a0de3e13bdfd461db95f70dedfb58bf62266b2026dd6243aacf1a26721
+- id: HO-0002
+  file: HO-0002.json
+  sha256: 4cded3b15f0917a8ce631eba06a94167623cde398c190b2eff7d8f09d69769cb
+- id: HO-0003
+  file: HO-0003.json
+  sha256: 2cfd418ee2ff3a8802e3b6922c924c2470aca6cf01bb1f458dfa58d0d86942af
+- id: HO-0004
+  file: HO-0004.json
+  sha256: f922b184f09675eda475ece94bc1bc7af6c9134c6386ded431cdfbcec4cdd7dd
+- id: HO-0005
+  file: HO-0005.json
+  sha256: c69515e7db2445cc9ab88328cc0983a5415c719fb7c12fcaf3db812cf98c6863
+- id: HO-0006
+  file: HO-0006.json
+  sha256: c5cc536194f1283813244a1cee78915d475911e0a48e6790432409b5381f6be2
