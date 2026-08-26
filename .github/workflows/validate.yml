@@ -4,6 +4,9 @@ name: validate
 # 做周期自检（已封存条目被改动而哈希未重算 = 试卷层完整性漂移，必须红）。
 # 注意：本 workflow 日志在 canary sweep 的扫描范围内——校验器输出已掩码 marker。
 on:
+  merge_group:
+    # ADR-0042：merge queue 必需订阅
+    types: [checks_requested]
   pull_request:
   push:
     branches: [main]
@@ -18,6 +21,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  hygiene:
+    # CI-4（enforced）：zizmor 工作流安全审计 + 大文件/密钥样文件巡检——可复用
+    # 工作流统一实现（canary marker 为自定义格式，不命中 gitleaks 规则）
+    uses: Cloudbird-Software/CI-Workflows/.github/workflows/hygiene.yml@61191f87c537f6e887695517121c6e530a838261 # v1
+    permissions:
+      contents: read
+
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -49,3 +59,25 @@ jobs:
         run: |
           pip install pyyaml
           python3 -m unittest discover -s scripts/tests -v
+
+  gate:
+    # 严格聚合器（ADR-0032 语义：skipped≠success，仅全 success 放行）——产出
+    # org ruleset main-protection 的 required check "gate" 上下文。此前本仓无
+    # gate job：required check 永不满足，PR 合并只能走 admin bypass（= §8 直推
+    # 漂移源）——治理对齐跟修（P0）
+    if: always()
+    needs: [validate, selftest, hygiene]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: All required jobs green?
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          echo "$NEEDS"
+          OK=$(echo "$NEEDS" | jq -r 'to_entries | all(.value.result == "success")')
+          if [[ "$OK" != "true" ]]; then
+            echo "::error::gate 上游未全绿（skipped≠success：严格断言——ADR-0032）"; exit 1
+          fi
