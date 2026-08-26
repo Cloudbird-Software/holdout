@@ -20,7 +20,10 @@ VERDICTS = {"pass", "gap-escalated", "tamper", "env-fail"}
 TS_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 ID_RE, SHA8_RE = re.compile(r"^HO-[0-9]{4}$"), re.compile(r"^[0-9a-f]{8}$")
 REQUIRED = ["schema", "ts", "repo", "pr", "run_id", "verdict", "entries", "passed", "total"]
-GENESIS = "sha256:GENESIS"
+# hash 域前缀（与 CI-Workflows pipeline/metering 同款公式）——三处使用同一常量，
+# 改域 = 换链，绝不只改一处。
+HASH_PREFIX = "sha256:"
+GENESIS = HASH_PREFIX + "GENESIS"
 
 
 def canon(obj) -> str:
@@ -28,7 +31,7 @@ def canon(obj) -> str:
 
 
 def line_hash(rec: dict) -> str:
-    return "sha256:" + hashlib.sha256(
+    return HASH_PREFIX + hashlib.sha256(
         canon({k: v for k, v in rec.items() if k != "record_hash"}).encode("utf-8")).hexdigest()
 
 
@@ -36,11 +39,11 @@ def check_record(rec, where: str, errs: list):
     """字段齐全性判据（append 收件与 verify 巡检共用）。"""
     if not isinstance(rec, dict):
         errs.append(f"{where}: 记录非 JSON 对象"); return
-    for k in REQUIRED:
-        if k not in rec:
-            errs.append(f"{where}: 缺字段 {k}")
-    if any(f.startswith(f"{where}: 缺字段") for f in errs):
-        return  # 必填已缺则后续判据连锁误报
+    # 先集中判必填：缺任一则后续判据连锁误报（直接短路，不靠嗅探自身已产出的消息）
+    missing = [k for k in REQUIRED if k not in rec]
+    errs.extend(f"{where}: 缺字段 {k}" for k in missing)
+    if missing:
+        return
     if rec.get("schema") != SCHEMA_ID:
         errs.append(f"{where}: schema={rec.get('schema')!r} 应为 {SCHEMA_ID}")
     if not (isinstance(rec.get("ts"), str) and TS_RE.match(rec["ts"])):
@@ -94,7 +97,7 @@ def cmd_append(args) -> int:
         try:
             last = json.loads(lines[-1])
             prev = last.get("record_hash", "")
-            if not str(prev).startswith("sha256:"):
+            if not str(prev).startswith(HASH_PREFIX):
                 raise ValueError("尾行无 record_hash")
         except (json.JSONDecodeError, ValueError) as exc:
             # 尾行坏=台账已损——绝不盲接（盲接=新记录挂不明链，历史不可审）
