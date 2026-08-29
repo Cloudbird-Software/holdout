@@ -21,3 +21,6 @@ entries:
 - id: HO-0007
   file: HO-0007.json
   sha256: 4914ef08503bf3b3b4f7856744019a7fd9c841fcdbcabef92e218f24422df0bb
+- id: HO-0008
+  file: HO-0008.json
+  sha256: 223f63e21d478254ea0c3760ecaf105483ffac38aa9154a072c009d35986e09c

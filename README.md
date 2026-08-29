@@ -58,6 +58,25 @@ sweep dispatch(`treat_drill_as_leak=true`) 应开出 P0 issue → 手动关闭�
 轮换一条 canary marker、执行一次泄漏演习。agent 补给 holdout = 运动员写考卷，
 禁止。
 
+## eval registry（IR-0006 W5-E1 / AC-10a）
+
+本仓自 HO-0008 起兼作 **eval registry**：`type=eval-quad` 条目封存评测基线的
+四元组 pin——代码+数据集+提示+模型（BEH-08 前置：基线可复现，非劣性判定
+才有锚）。
+
+- `payload.quad` 四键全 pin：code/dataset/prompt 须 `sha256`（64hex）或
+  `commit`（40hex）digest 锚；model 为 API 模型时允许 `version` 锚
+  （name@version 是 provider 侧可钉的最大锚——API 模型无内容 digest，
+  本地权重/自托管模型仍应给 sha256/commit）。逐键执法在
+  `scripts/validate_entries.py`（结构非法=红）。
+- 引用纪律不变：spec/卡/PR/policy 只能引用 `id@sha8`
+  （如 `HO-0008@557ee371`），禁止引用 payload 内容。
+- eval gate 家族（非劣性 δ+污染检查+成本/延迟回归，AC-10b）的真源在
+  `.github` 仓 `governance/policy/eval-gates.yaml`——policy 里的
+  baseline_ref 即上述 `id@sha8` 形态。
+- 生成一律 `scripts/new_entry.py --type eval-quad`（quad 结构在生成侧
+  先拒非法，validate 侧再执法——双闸）。
+
 ## 目录结构
 
 ```

@@ -23,8 +23,8 @@
       "description": "来源验收判据（如 IR-0003/W1-C4/AC-2）——与 ir_ref 二选一"
     },
     "type": {
-      "enum": ["e2e-scenario", "golden", "agent-trajectory", "canary"],
-      "description": "e2e-scenario=封存验收场景；golden=黄金输出/结构；agent-trajectory=agent 任务轨迹样本（宪法 §13 推论一）；canary=泄漏诱饵"
+      "enum": ["e2e-scenario", "golden", "agent-trajectory", "canary", "eval-quad"],
+      "description": "e2e-scenario=封存验收场景；golden=黄金输出/结构；agent-trajectory=agent 任务轨迹样本（宪法 §13 推论一）；canary=泄漏诱饵；eval-quad=eval registry 四元组 pin（代码+数据集+提示+模型，IR-0006 W5-E1/AC-10a——quad 结构由 validate_entries.py 逐键执法）"
     },
     "payload": {
       "type": "object",
