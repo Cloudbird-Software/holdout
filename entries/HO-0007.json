@@ -1,0 +1,31 @@
+{
+  "ac_ref": "IR-0006/W3-F2/AC-7e",
+  "created_at": "2026-08-29T14:01:36Z",
+  "id": "HO-0007",
+  "payload": {
+    "given": {
+      "precondition": "表内存在行 .github#416，State=in-progress（与 GitHub label 态一致）",
+      "projection": "factory-floor 飞书多维表格（feishu-sync 周期同步，label 唯一真源 INV-05）",
+      "rebuild_precondition": "整表删除后 --drop 单轮同步内重建且字段一致"
+    },
+    "impl_ref": "governance/feishu-sync.py（plan_sync drift_alarms + Feishu.batch_update）",
+    "reproduce": {
+      "drill": "gh workflow run feishu-drill.yml -f mode=sync（篡改后）；-f mode=verify（断言收敛）",
+      "evidence_runs": {
+        "drift_correction": 33254361404,
+        "drop_and_rebuild": 33253934780,
+        "post_rebuild_verify": 33253986814
+      },
+      "ledger": "feishu-ledger 分支 governance/feishu/shadow-evidence.jsonl（evidence-query 第 6 源可查）"
+    },
+    "scenario": "投影重建保真：人工违规修改被下轮投影纠正（INV-05 漂移检测活体证明）",
+    "then": {
+      "forbidden": "投影静默吞掉人工改动（无告警）或表内 State 停留在 done",
+      "oracle": "下一轮 feishu-drill sync 后：表内 State 回 in-progress（label 为准纠正）且 WARN feishu-drift 行出现、drift_alarms>=1 入审计与影子账本（feishu-ledger）；纠正后 --verify exit 0（收敛）。整表删除场景：--drop 单轮重建 30 行后 --verify exit 0"
+    },
+    "when": "绕过 label 真源，经 bitable 单记录 PUT 直接改 .github#416 的 State=done（模拟人工在表格上违规修改）"
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "4dd9b63e74d73174b19d5c63eaa1dda1f9dc72738461a71d8a8a6fd006d59245",
+  "type": "e2e-scenario"
+}
