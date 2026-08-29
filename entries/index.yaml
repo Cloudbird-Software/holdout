@@ -18,3 +18,6 @@ entries:
 - id: HO-0006
   file: HO-0006.json
   sha256: c5cc536194f1283813244a1cee78915d475911e0a48e6790432409b5381f6be2
+- id: HO-0007
+  file: HO-0007.json
+  sha256: 4914ef08503bf3b3b4f7856744019a7fd9c841fcdbcabef92e218f24422df0bb
