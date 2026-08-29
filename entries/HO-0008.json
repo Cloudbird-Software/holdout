@@ -1,0 +1,42 @@
+{
+  "ac_ref": "IR-0006/W5-E1/AC-10a",
+  "created_at": "2026-08-29T16:03:28Z",
+  "id": "HO-0008",
+  "payload": {
+    "eval": {
+      "metric": "post-fix precision（建议被事后人工修复命中比例，ADR-0063 口径）",
+      "replay": "四元组钉版下重放 fixture（CI-Workflows@commit checkout）→ report.json 逐字段可复现",
+      "runner": "python3 pipeline/ocr/precision.py --records <jsonl> --followups <dir> --out report.json"
+    },
+    "notes": "骨架期首条 eval-quad（W5-E1）：结构+可复现钉版先立；真实 shadow 记录数据集（run artifacts）入 registry 走后续条目。引用仅 id@sha8。",
+    "quad": {
+      "code": {
+        "commit": "268715216f6882eec6daabc497834af06f99de0b",
+        "name": "ciw-ocr-precision-postfix-baseline",
+        "path": "pipeline/ocr/precision.py",
+        "repo": "Cloudbird-Software/CI-Workflows",
+        "sha256": "17fa1e9e9310e96b976aa08c1230ac671c69096b995e880738157d90d796e8a6"
+      },
+      "dataset": {
+        "commit": "268715216f6882eec6daabc497834af06f99de0b",
+        "name": "ciw-ocr-precision-selftest-fixture（records+followups fixture 集）",
+        "path": "pipeline/ocr/tests/test_precision.py",
+        "repo": "Cloudbird-Software/CI-Workflows",
+        "sha256": "edd6dbe115d780eaf34c52d66cc65922ce03141139dfd4e2b124cdb8faedcf9d"
+      },
+      "model": {
+        "name": "z-ai glm（API 评审模型——shadow 记录 model 字段口径）",
+        "provider": "z-ai",
+        "version": "glm-4.5-air"
+      },
+      "prompt": {
+        "name": "ocr-v1.9.9-embedded-review-prompt（vendored OCR 内嵌提示，SBOM 钉锚）",
+        "sbom": "pipeline/ocr/sbom/ocr-v1.9.9.cdx.json",
+        "sha256": "52f993c615a6b456cb1c36fc135fec6b8da19cb88da7f305bd2726c3d72f1cf0"
+      }
+    }
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "557ee371dfd2782d354b13e9bdd23ae1909023a32c5006b7ed3148736efb89be",
+  "type": "eval-quad"
+}

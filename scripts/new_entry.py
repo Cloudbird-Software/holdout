@@ -14,6 +14,8 @@
 #   python scripts/new_entry.py --type canary --ac-ref "IR-0003/W1-C4/AC-3" \
 #     --sealed-by randypanding --payload-file bait.json \
 #     --marker "$(openssl rand -hex 8 | sed 's/^/CLOUDBIRD-HOLDOUT-CANARY-/')" --drill
+#   python scripts/new_entry.py --type eval-quad --ac-ref "IR-0006/W5-E1/AC-10a" \
+#     --sealed-by randypanding --payload-file quad.json   # quad 四元组 pin（W5-E1）
 # 生成后必须跑 python scripts/validate_entries.py 验证再提交。
 
 import argparse
@@ -29,7 +31,31 @@ import yaml
 MARKER_RE = re.compile(r"^CLOUDBIRD-HOLDOUT-CANARY-[0-9a-f]{16}$")
 MARKER_PREFIX = "CLOUDBIRD-HOLDOUT-CANARY-"
 ID_RE = re.compile(r"^HO-(\d{4})$")
-TYPES = ["e2e-scenario", "golden", "agent-trajectory", "canary"]
+TYPES = ["e2e-scenario", "golden", "agent-trajectory", "canary", "eval-quad"]
+QUAD_KEYS = ("code", "dataset", "prompt", "model")
+
+
+def validate_eval_quad(payload: dict):
+    """eval-quad payload 结构执法（IR-0006 W5-E1 / AC-10a）：
+    quad 四元组（代码+数据集+提示+模型）全 pin——每键须为对象且含
+    64hex sha256 或 40hex git commit 之一的 digest 形态锚（引用仅 id@sha8）。"""
+    quad = payload.get("quad")
+    if not isinstance(quad, dict) or set(quad) != set(QUAD_KEYS):
+        return f"quad 须且仅含四键 {list(QUAD_KEYS)}"
+    for k in QUAD_KEYS:
+        item = quad[k]
+        if not isinstance(item, dict) or not str(item.get("name") or "").strip():
+            return f"quad.{k} 须为对象且含非空 name"
+        pin = item.get("sha256", "") or ""
+        commit = item.get("commit", "") or ""
+        anchored = re.fullmatch(r"[0-9a-f]{64}", pin) or re.fullmatch(r"[0-9a-f]{40}", commit)
+        if k == "model" and not anchored:
+            # API 模型无内容 digest：name@version 是可钉的最大锚（provider 侧版本
+            # 标识）——本地权重/自托管模型仍应给 sha256/commit
+            anchored = bool(str(item.get("version") or "").strip())
+        if not anchored:
+            return f"quad.{k} 缺 digest 锚（sha256 64hex / commit 40hex；model 可 version 锚）"
+    return None
 
 
 def canon(obj) -> str:
@@ -75,6 +101,11 @@ def main() -> int:
     if not isinstance(payload, dict):
         print("FAIL  payload 必须是 JSON 对象", file=sys.stderr)
         return 1
+    if args.type == "eval-quad":
+        err = validate_eval_quad(payload)
+        if err:
+            print(f"FAIL  eval-quad payload 结构非法: {err}", file=sys.stderr)
+            return 1
     if args.type == "canary":
         if "marker" in payload:
             print("FAIL  canary payload 文件不得自带 marker 字段（由本脚本注入 --marker）", file=sys.stderr)

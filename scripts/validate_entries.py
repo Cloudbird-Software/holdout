@@ -126,6 +126,12 @@ def main() -> int:
         # 非 canary 条目不得混入 marker 前缀串
         if data["type"] != "canary" and MARKER_PREFIX in canon(data["payload"]):
             err(f"{eid}（type={data['type']}）payload 含 canary marker 前缀串——语义混淆，拒绝")
+        # eval-quad：四元组 pin 逐键执法（IR-0006 W5-E1 / AC-10a）
+        if data["type"] == "eval-quad":
+            from new_entry import validate_eval_quad
+            qerr = validate_eval_quad(data["payload"])
+            if qerr:
+                err(f"{eid}（type=eval-quad）{qerr}")
     # id 唯一已保证；递增+连续（append-only）
     numbers.sort()
     if numbers and numbers != list(range(1, len(numbers) + 1)):
