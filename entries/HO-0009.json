@@ -1,0 +1,36 @@
+{
+  "created_at": "2026-09-01T12:31:39Z",
+  "id": "HO-0009",
+  "ir_ref": "#107",
+  "payload": {
+    "acceptance": [
+      "成品为可播放 mp4，画幅 1080x1920（9:16），fps 为 25 或 30",
+      "成品时长落在 5-8 秒区间（整数帧时基）",
+      "信息层含店名、招牌菜名、价格、地址、电话五个要素，且文本与 merchant_mock 逐字一致（价格含货币单位）",
+      "成品携带 AIGC 标识（画面角标或容器元数据二者至少其一）",
+      "成品通过形态1 断言包：无黑帧/冻结帧超限、fps/分辨率达标、vlm_boolean 主体不崩判定为可用",
+      "本次运行落盘为内容寻址 run artifact，报告中的判定明细与聚合出片率可由该 artifact 复算"
+    ],
+    "form": "GEN_FORM_1_BREATHE",
+    "input_spec": {
+      "info_sheet": "merchant_mock 全字段",
+      "seed_images": "1 张菜品实拍风格静态图（公开图库或合成，主体居中、9:16 或可裁切）"
+    },
+    "merchant_mock": {
+      "address": "锦江区幸福路12号",
+      "category": "餐饮",
+      "headline_item": {
+        "name": "招牌笋子烧牛肉",
+        "price": "42元"
+      },
+      "name": "巷口小馆",
+      "one_liner": "现烧现上，一锅一灶",
+      "phone": "028-8888-6666"
+    },
+    "scenario": "form1-breathe-e2e",
+    "verdict_method": "在实现侧端到端管线上以 input_spec 为唯一输入执行一次完整生成+合成，揭封后按 acceptance 逐条机器判定（信息层一致性经 OCR 或渲染请求比对，AIGC 标识经容器元数据或帧采样检测，时长/画幅经 ffprobe，断言包经 QC 引擎），任一条不满足即 holdout 失败"
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "18eda58f0cf94d96b261669814bda69f4e479dea8932e4c0317fb7c9442318b2",
+  "type": "e2e-scenario"
+}
