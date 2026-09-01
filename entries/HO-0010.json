@@ -1,0 +1,37 @@
+{
+  "created_at": "2026-09-01T12:31:39Z",
+  "id": "HO-0010",
+  "ir_ref": "#107",
+  "payload": {
+    "acceptance": [
+      "成品为可播放 mp4，画幅 1080x1920（9:16），fps 为 25 或 30",
+      "成品时长不超过 6 秒（整数帧时基）",
+      "口播语音清晰可辨且内容含 script_seed 三要素（品牌名、卖点、行动号召）",
+      "人物口型与语音同步通过 lipsync 断言（LSE-C/LSE-D 在断言包阈值内）",
+      "信息层至少含品牌名，成品携带 AIGC 标识（画面角标或容器元数据二者至少其一）",
+      "本次运行落盘为内容寻址 run artifact，报告中的判定明细与聚合出片率可由该 artifact 复算"
+    ],
+    "form": "GEN_FORM_4_OWNER_TALK",
+    "input_spec": {
+      "portrait_image": "1 张店主正面照（公开图库或合成，面部无遮挡）",
+      "script": "由 script_seed 派生的 ≤6 秒口播文案（品牌名 + 卖点 + 行动号召三要素齐全）",
+      "voice": "TTS 合成语音（默认音色，无需克隆）"
+    },
+    "merchant_mock": {
+      "category": "美业",
+      "name": "静颜皮肤管理",
+      "one_liner": "用心做好每一次护理",
+      "persona": "店主女性，正面半身照（公开图库或合成人像，含清晰正脸）",
+      "script_seed": {
+        "brand": "静颜皮肤管理",
+        "cta": "到店咨询，本周预约有礼",
+        "selling_point": "焕肤护理首体验"
+      }
+    },
+    "scenario": "form4-owner-talk-e2e",
+    "verdict_method": "在实现侧端到端管线上以 input_spec 为唯一输入执行一次完整生成+合成（TTS→lipsync→信息层叠加），揭封后按 acceptance 逐条机器判定（口播内容经 ASR 转写后与 script_seed 三要素比对，lipsync 经 SyncNet 类探针，其余经 ffprobe/元数据/QC 引擎），任一条不满足即 holdout 失败"
+  },
+  "sealed_by": "randypanding",
+  "sealed_sha256": "123d89e40419f0d017090ce25024fc11142dd3c31cf9f94d51b4929245ed2447",
+  "type": "e2e-scenario"
+}
