@@ -1,33 +1,11 @@
 {
-  "created_at": "2026-08-21T09:05:00Z",
+  "created_at": "2026-09-06T13:17:57Z",
   "id": "HO-0002",
   "ir_ref": "#161",
   "payload": {
-    "golden": {
-      "scenes": [
-        {
-          "beat": "hook",
-          "max_chars_per_line": 20,
-          "max_lines": 2
-        },
-        {
-          "beat": "setup",
-          "max_lines": 3
-        },
-        {
-          "beat": "turn",
-          "max_lines": 2
-        },
-        {
-          "beat": "payoff",
-          "max_lines": 2,
-          "must_reference": [
-            "外卖备注"
-          ]
-        }
-      ],
-      "tolerance_sec": 2,
-      "total_duration_sec": 30
+    "answer_ref": {
+      "sealed_sha256": "f47bd1d79f94cb9f08cdd77047fa9de2c0f9beb3861bbba8754a6e7ad276c0a3",
+      "stronghold": "answers/field-level/HO-0002.answers.json"
     },
     "input": {
       "format": "short-video-script",
@@ -36,7 +14,7 @@
     "kind": "script-structure-golden",
     "repo_hint": "Script_Writer"
   },
-  "sealed_by": "randypanding",
-  "sealed_sha256": "aae03966c4e3b2301484b38c1081e20e7654c20e2f9c09bffde0d10368ebca2a",
+  "sealed_by": "randypanding（owner 2026-09-06 会话授权 agent 执行迁移重封——ADR-0109 回签附录/IR-0010 卡 B2 批次二）",
+  "sealed_sha256": "020dbfa97ceba711a30196dc6726cc41cf6b7e1a7db0ea88042f13102595b7b6",
   "type": "golden"
 }
