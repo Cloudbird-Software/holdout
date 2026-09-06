@@ -1,8 +1,12 @@
 {
   "ac_ref": "IR-0006/W3-F2/AC-7e",
-  "created_at": "2026-08-29T14:01:36Z",
+  "created_at": "2026-09-06T13:17:57Z",
   "id": "HO-0007",
   "payload": {
+    "answer_ref": {
+      "sealed_sha256": "6d9b50af9ddf97a324285d2da0a90cc2580c81b9a33dbf5c5c82536ae014ff3b",
+      "stronghold": "answers/field-level/HO-0007.answers.json"
+    },
     "given": {
       "precondition": "表内存在行 .github#416，State=in-progress（与 GitHub label 态一致）",
       "projection": "factory-floor 飞书多维表格（feishu-sync 周期同步，label 唯一真源 INV-05）",
@@ -19,13 +23,9 @@
       "ledger": "feishu-ledger 分支 governance/feishu/shadow-evidence.jsonl（evidence-query 第 6 源可查）"
     },
     "scenario": "投影重建保真：人工违规修改被下轮投影纠正（INV-05 漂移检测活体证明）",
-    "then": {
-      "forbidden": "投影静默吞掉人工改动（无告警）或表内 State 停留在 done",
-      "oracle": "下一轮 feishu-drill sync 后：表内 State 回 in-progress（label 为准纠正）且 WARN feishu-drift 行出现、drift_alarms>=1 入审计与影子账本（feishu-ledger）；纠正后 --verify exit 0（收敛）。整表删除场景：--drop 单轮重建 30 行后 --verify exit 0"
-    },
     "when": "绕过 label 真源，经 bitable 单记录 PUT 直接改 .github#416 的 State=done（模拟人工在表格上违规修改）"
   },
-  "sealed_by": "randypanding",
-  "sealed_sha256": "4dd9b63e74d73174b19d5c63eaa1dda1f9dc72738461a71d8a8a6fd006d59245",
+  "sealed_by": "randypanding（owner 2026-09-06 会话授权 agent 执行迁移重封——ADR-0109 回签附录/IR-0010 卡 B2 批次二）",
+  "sealed_sha256": "b9d6e00fb427b9718bae5f9abf0c3eb8c4b241a52f92df686f0ce60da5533097",
   "type": "e2e-scenario"
 }

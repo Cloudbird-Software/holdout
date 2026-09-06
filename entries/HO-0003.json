@@ -1,16 +1,11 @@
 {
   "ac_ref": "IR-0003/W1-C4/AC-2",
-  "created_at": "2026-08-21T09:10:00Z",
+  "created_at": "2026-09-06T13:17:57Z",
   "id": "HO-0003",
   "payload": {
-    "golden_output": {
-      "assignment": {
-        "a1": "s1",
-        "a2": "s3",
-        "a3": "s2"
-      },
-      "note": "人人拿到首选（matrix 值 2）——稳定且无 envy 的平凡正确解，用作 NSW 匹配器的封存 oracle",
-      "stable": true
+    "answer_ref": {
+      "sealed_sha256": "5e3398f02968784404bde15bf5d16108924732c359c45d0ea5834764f2bcc350",
+      "stronghold": "answers/field-level/HO-0003.answers.json"
     },
     "input": {
       "agents": [
@@ -44,7 +39,7 @@
     "kind": "matching-golden",
     "repo_hint": "mutual"
   },
-  "sealed_by": "randypanding",
-  "sealed_sha256": "a8179fd2e3fb4b47576891499adc8291fad09a671cc769dbf822ede31dc12069",
+  "sealed_by": "randypanding（owner 2026-09-06 会话授权 agent 执行迁移重封——ADR-0109 回签附录/IR-0010 卡 B2 批次二）",
+  "sealed_sha256": "c8694487fb3c4910a1e6f4f385e47c13a8756035ef14b897936ae918838f49d9",
   "type": "golden"
 }
